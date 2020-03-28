@@ -9,12 +9,24 @@
 import UIKit
 
 class ImageCache {
-
-    static let cache = URLCache(
-        memoryCapacity: Configuration.shared.memoryCapacity,
-        diskCapacity: Configuration.shared.diskCapacity,
-        diskPath: "unsplash"
-    )
+    
+    let cache: URLCache
+    
+    init() {
+        if #available(iOS 13, *) {
+            self.cache = URLCache(
+                memoryCapacity: Configuration.shared.memoryCapacity,
+                diskCapacity: Configuration.shared.diskCapacity,
+                directory: URL(fileURLWithPath: "unsplash")
+            )
+        } else {
+            self.cache = URLCache(
+               memoryCapacity: Configuration.shared.memoryCapacity,
+               diskCapacity: Configuration.shared.diskCapacity,
+               diskPath: "unsplash"
+            )
+        }
+    }
 
     static let memoryCapacity: Int = 50.megabytes
     static let diskCapacity: Int = 100.megabytes
